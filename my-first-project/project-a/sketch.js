@@ -33,8 +33,9 @@ let lerpProgress = 0;
 let showText = false;
 
 function setup() {
-  let canvas =createCanvas(800, 500);
-  canvas = canvas.parent("p5-canvas-container");
+  let canvas = createCanvas(800, 500);
+ canvas.parent = ("p5-canvas-container");
+
   x = width / 2;
   y = height / 2;
 
@@ -56,7 +57,7 @@ function draw() {
       let cy = j + j * 15;
       noStroke();
       fill(
-        lerpColor(color("lightblue"), color("salmon"), map(cx, 1, width, 0, 1))
+        lerpColor( color("#6552D0"),color("#17203D"), map(cx, 1, width, 0, 1))
       );
       circle(cx, cy, random(100));
     }
