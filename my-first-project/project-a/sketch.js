@@ -31,6 +31,7 @@ let partYDest;
 let hasParticle = false;
 let lerpProgress = 0;
 let showText = false;
+let ateFoodText = false;
 
 function setup() {
   let canvas = createCanvas(800, 500);
@@ -50,14 +51,15 @@ function setup() {
 function draw() {
   background(220);
 
-  // Draw static grid once
+
+  // Background grid
   for (let i = 0; i < 50; i++) {
     for (let j = 0; j < 50; j++) {
       let cx = i + i * 15;
       let cy = j + j * 15;
       noStroke();
       fill(
-        lerpColor( color("#6552D0"),color("#17203D"), map(cx, 1, width, 0, 1))
+        lerpColor(color("#6552D0"), color("#17203D"), map(cx, 1, width, 0, 1))
       );
       circle(cx, cy, random(100));
     }
@@ -66,6 +68,13 @@ function draw() {
     fill(0);
     textSize(20);
     text("Message", 20, 40);
+  }
+
+  if (ateFoodText) {
+    fill("white");
+    textSize(20);
+    text("Delicious", 300, 40);
+    ateFoodText = false;
   }
 
   // Draw and update water droplet
@@ -114,11 +123,11 @@ function draw() {
 
   // Draw food
   fill("green");
-  circle(foodX, foodY, 10);
+  circle(foodX, foodY, 15);
 
-  // === Draw particle ===
+  //  Draw particle
   if (hasParticle) {
-    fill(0);
+    fill("white");
     circle(partX, partY, 8);
     lerpProgress += 0.1;
     partX = lerp(partX, partXDest, lerpProgress);
@@ -174,27 +183,30 @@ function handleFoodMovement() {
 // Draw a Deon Body
 function drawBody(x, y, size) {
   push();
+  //ateFoodText = true;
   let d = dist(mouseX, mouseY, x, y);
   let foodDist = dist(x, y, foodX, foodY);
 
   if (mouseIsPressed) {
     rotate(radians(random(sin(50 * frameCount)), frameCount / 200));
-    fill("red");
+    fill(208, 0, 0);
   } else if (d < size + 30 || foodDist < size + 10) {
-    fill(random(0, 100), random(100, 200), 0);
+    fill(224, 122, 95);
   } else {
-    fill("blue");
+    fill(163, 177, 138);
   }
 
   if (foodDist < size - 10) {
     size += 1;
+
     foodX = random(width / 2);
     foodY = random(height / 2);
+    ateFoodText = true;
   }
 
   drawLimb(x, y);
   circle(x, y, size);
-  eye(x, y, 6);
+  eye(x, y, 8);
   pop();
   return size;
 }
@@ -203,7 +215,8 @@ function drawBody(x, y, size) {
 function drawLimb(x, y) {
   push();
   translate(x, y);
-  stroke(0, random(sin(frameCount)), random(100, 255));
+  stroke(lerpColor(color("#00B4D8"), color("#9D4EDD"), map(x, 0, width, 0, 1)));
+
   strokeWeight(2);
   for (let angle = 0; angle < TWO_PI; angle += PI / 4) {
     push();
@@ -226,11 +239,15 @@ function eye(x, y, size) {
   push();
   translate(x, y);
   fill("white");
+
+  //EyeBall
   circle(-7, 0, size);
   circle(7, 0, size);
   fill("black");
-  circle(-7 + mouseX * 0.01, 0, size - 3);
-  circle(7 + mouseX * 0.01, 0, size - 3);
+  //Pupil
+  let dx = constrain(mouseX - x, -10, 10) * 0.1;
+  circle(-7 + dx, 0, size - 3);
+  circle(7 + dx, 0, size - 3);
   pop();
 }
 
