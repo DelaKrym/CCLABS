@@ -31,11 +31,15 @@ let partYDest;
 let hasParticle = false;
 let lerpProgress = 0;
 let showText = false;
+
+
 let ateFoodText = false;
+let ateFoodTextTimer = 0;
 
 function setup() {
-  let canvas = createCanvas(800, 500);
-  canvas.parent("p5-canvas-container");
+ let canvas = createCanvas(800, 500);
+ canvas.id("p5-canvas");
+ canvas.parent("p5-canvas-container");
 
   x = width / 2;
   y = height / 2;
@@ -70,10 +74,11 @@ function draw() {
     text("Message", 20, 40);
   }
 
-  if (ateFoodText) {
+  if (ateFoodText && millis()- ateFoodTextTimer < 1000) {
     fill("white");
     textSize(20);
     text("Delicious", 300, 40);
+  } else {
     ateFoodText = false;
   }
 
@@ -202,6 +207,7 @@ function drawBody(x, y, size) {
     foodX = random(width / 2);
     foodY = random(height / 2);
     ateFoodText = true;
+    ateFoodTextTimer = millis();
   }
 
   drawLimb(x, y);
