@@ -46,7 +46,7 @@ class StephenDancer {
     if (mouseIsPressed) {
       this.danceStep = (this.danceStep + 1) % 60;
 
-      // Two-step forward
+      // Two-steps forward
       if (this.danceStep < 30) {
         this.x = this.x + 1.5;
       } else {
@@ -65,14 +65,17 @@ class StephenDancer {
   display() {
     push();
     translate(this.x, this.y);
-    this.drawDancer();
+    this.drawFace();
     this.drawBody();
     this.drawArm();
     this.drawLeg();
 
     pop();
+
+
   }
-  drawDancer() {
+  // Face
+  drawFace() {
     fill(this.col);
     ellipse(0, 0, 100);
     fill("white");
@@ -91,10 +94,9 @@ class StephenDancer {
     //mouth
     noStroke();
     fill("white");
-    let s = degrees(PI);
-    arc(0, 25, 30, 30, 0, s);
+    arc(0, 25, 30, 30, 0, -180);
   }
-
+  //Body
   drawBody() {
     push();
     fill(this.col);
@@ -115,6 +117,8 @@ class StephenDancer {
     triangle(-5, 85, 0, 90, 5, 85);
     pop();
   }
+  //Arm
+
   drawArm() {
     //Right-arm
     fill(this.col);
@@ -129,7 +133,6 @@ class StephenDancer {
 
     //Left-arm
     push();
-
     translate(-50, 50);
     rotate(this.leftArmAngle);
     noStroke();
@@ -137,7 +140,7 @@ class StephenDancer {
     circle(-75, 15, 40);
     pop();
   }
-
+  //Leg
   drawLeg() {
 
     //Left- leg
