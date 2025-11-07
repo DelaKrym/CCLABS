@@ -76,7 +76,7 @@ class Particle {
     this.SpdY -= 0.15;
 
     this.checkOutOfCanvas();
-    // (add) 
+
 
   }
 
@@ -114,6 +114,5 @@ function mousePressed() {
   let dur = map(particles.length, 0, MAX_OF_PARTICLES, 0.1, 0.5);
 
   monoSynth.play(note, velocity, time, dur);
-  monoSynth.pan(map(mouseX, 0, width, -1, 1));
 }
 
