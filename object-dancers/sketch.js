@@ -69,10 +69,7 @@ class StephenDancer {
     this.drawBody();
     this.drawArm();
     this.drawLeg();
-
     pop();
-
-
   }
   // Face
   drawFace() {

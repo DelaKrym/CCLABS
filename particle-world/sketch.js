@@ -14,6 +14,7 @@ function setup() {
     particles[i] = new Particle(random(width), height - 100);
   }
 
+
   monoSynth = new p5.MonoSynth();
 }
 
@@ -28,10 +29,6 @@ function draw() {
     p.display();
   }
 
-  // limit the number of particles
-  // if (particles.length > MAX_OF_PARTICLES) {
-  //   particles.splice(0, 1); // remove the first (oldest) particle
-  // }
 
   for (let i = particles.length - 1; i >= 0; i--) {
     let p = particles[i];
