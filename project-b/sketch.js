@@ -13,13 +13,8 @@ function preload() {
   scenes.push(new Scene(
     //scene1
     ['Assets/city_a.png', 'Assets/negotiation_a.png'],
-    ['City A', 'Good Morning, Mr. Eric. How are you today?', 'Good morning, I am doing well, thank you. How can I help you?',
-      'We recently did a survey in this city and we found that most the lands has Gold deposits beneath them...',
-      '...and we are willing to pay you a good amount of money to buy it for mining purposes.',
-      'Hmm...,I never knew about that infomation. However, for the past few months, I have not been able to go to work in the farms...',
-      '...because of old age and I wanted to sell the land so that I can cater for my family.', 'How much are you willing to pay for the land?',
-      'We are willing to pay GHS 70,000 for the land.', 'That sounds like a good deal, ...but I would like to have one of my kids to work with youin your company.',
-      'No problem, we can sort that out, Thank you and your would hear from us with the money soon.'], 1));
+    ['City A', 'Mr. Eric, a 60 years old man, decided to his land to a illegal miner for a quick money as he thought farming was waste of his time',
+      'As he has discovered he would get huge sums of money from the sale of the land'], 1));
   scenes.push(new Scene(
     //scene2
     ['Assets/rich_family.png'],
@@ -27,7 +22,7 @@ function preload() {
       'Since, he was not getting enough money from his business, poverty started to struck him and his family'], 2));
   scenes.push(new Scene(
     //scene3
-    ['Assets/city_b.png', 'Assets/negotiation_b.png'],
+    ['Assets/sick_family.png', 'Assets/grave.png'],
     ['Due to the influx of chemicals in the environment,he and his family became illness after they started drinking and eating from waterbodies and farms in the community',
       'Unfortunately, he and his family died from prolonged illness caused the pollution in the environment.'], 3));
   scenes.push(new Scene(
@@ -57,17 +52,6 @@ function preload() {
     s.preload();
   }
 
-  //   for (let s = 0; s < image.length; s++) {
-  //     for (let i = 0; i < image[s].length; i++) {
-  //       images[s][i] = loadImage(image[0][i]);
-  //     }
-
-  //   }
-  //   for (let i = 0; i < 12; i++) {
-  //     images[1].push(loadImage('scene1_' + i + '.png'));
-  //   }
-  // }
-
   mySound = loadSound("Sounds/song.mp3")
 }
 
@@ -75,8 +59,7 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   //canvas.parent('p5-canvas-container');
-  textSize(32);
-  textAlign(CENTER, CENTER);
+
 }
 
 function draw() {
@@ -119,6 +102,7 @@ class Scene {
     this.images = [];
     this.speed = 2;
     this.index = index;
+    this.imgFade = 0;
     // this.x = x;
     // this.y = y;
     // this.w = w;
@@ -141,11 +125,26 @@ class Scene {
   }
   display(scrollY) {
     let curScroll = scrollY - this.index * 500;
+    let margin = 40;
+    let space = 12;
+    let imgW = width * 0.4;
+    let imgH = imgW * 0.75;
+    let imgX = margin;
+    let textX = imgX + imgW + 30;
+    let yBase = 100 - curScroll * this.speed;
+
     for (let i = 0; i < this.images.length; i++) {
-      image(this.images[i], 50 + i * 200, 100 - curScroll * this.speed, 400, 300);
+      image(this.images[i], imgX + i, yBase, imgW, imgH);
     }
     for (let i = 0; i < this.text.length; i++) {
+      textSize(24);
+      textFont('Caveat')
+      textAlign(CENTER, CENTER);
+      textWrap(WORD);
+      fill(30);
+
       text(this.text[i], width / 2, 500 + i * 50 - curScroll * this.speed);
+
     }
   }
 }
