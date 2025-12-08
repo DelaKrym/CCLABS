@@ -2,15 +2,19 @@ let curScene = 0;
 //let scrollY = window.scrollY;
 let scenes = [];
 
+let bg0;
 let bg1;
 let bg2;
+
+let amp;
 
 function preload() {
   //Images & text
   scenes.push(new Scene(
     //scene0
     ['Assets/children.png'],
-    ['Welcome to 2070\nI have a great story to share with you\nIn 2020, our beloved country faced a severe enviromental crisis, illegal mining.\nToday, I would like to share stories of two cities and how they dealt it illegal mining.'], 0));
+    ['🎉Welcome to 2070🎉\nI have a great story to share with you\nIn 2020, our beloved country faced a severe enviromental crisis, illegal mining.\nToday, I would like to share stories of two cities and how they dealt it.'],
+    0));
   scenes.push(new Scene(
     //scene1
     ['Assets/negotiation_a.png'],
@@ -52,7 +56,7 @@ function preload() {
   for (let s of scenes) {
     s.preload();
   }
-
+  bg0 = loadImage("Assets/kids.jpg")
   bg1 = loadImage("Assets/city_1.jpg");
   bg2 = loadImage("Assets/city_2.png");
 
@@ -63,14 +67,17 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   //canvas.parent('p5-canvas-container');
-
+  amp = new p5.Amplitude();
+  amp.setInput(mySound);
 }
 
 function draw() {
   tint(255, 255, 255, 255);
   background("d0d0d0");
-
-  if (curScene > 0 && curScene <= 4) {
+  if (curScene == 0) {
+    image(bg0, 0, 0, windowWidth, windowHeight);
+  }
+  else if (curScene > 0 && curScene <= 4) {
     image(bg1, 0, 0, windowWidth, windowHeight);
     textSize(50);
     textFont("Amatic SC")
@@ -104,7 +111,7 @@ function draw() {
 
   curScene = int(scrollY / 200);
   curScene = constrain(curScene, 0, scenes.length - 1);
-  scenes[curScene].display(scrollY);
+  //scenes[curScene].display(scrollY);
 
   // this is a number between 0 and 1
   // let scrollY =
@@ -122,13 +129,8 @@ function draw() {
 
   let volValue = map(scrollY, 0, 2000, 0, 1);
   mySound.setVolume(volValue);
-
-  // let panValue = map(scrollY, 0, 2000, -1, 1);
-  // mySound.pan(panValue);
-
-  // let rateValue = map(scrollY, 0, 2000, 0.5, 2);
-  // mySound.rate(rateValue);
-
+  let level = amp.getLevel();
+  let moveY = map(level, 0, 0.3, -30, 30);
   // Instructions
   textSize(16);
   textFont('Caveat')
@@ -146,11 +148,9 @@ class Scene {
     this.images = [];
     this.speed = 5;
     this.index = index;
-    this.imgFade = 0;
-    // this.x = x;
-    // this.y = y;
-    // this.w = w;
-    // this.h = h;
+
+    //this.ImgSettings = ImgSettings;
+
 
   }
   preload() {
@@ -181,9 +181,24 @@ class Scene {
 
     let yBase = 100 - curScroll * this.speed;
     let contentW = this.images.length * imgW + (this.images.length - 1) * margin;
+
+    if (this.index === 0) {
+      fill(30, alpha);
+      textSize(40);
+      textFont('Amatic SC');
+      textAlign(CENTER, CENTER);
+      textWrap(WORD);
+      text(this.text[0], width / 2, height / 2);
+
+      return;
+    }
     for (let i = 0; i < this.images.length; i++) {
       fill(255, alpha);
-      image(this.images[i], (width - contentW) / 2 + (i * (imgW + margin)), yBase, imgW, imgH);
+      let moveY = map(amp.getLevel(), 0, 0.3, -30, 30);
+      let y = yBase + moveY;
+      let x = (width - contentW) / 2 + i * (imgW + margin);
+
+      image(this.images[i], x, y, imgW, imgH);
     }
     for (let i = 0; i < this.text.length; i++) {
       noTint()
